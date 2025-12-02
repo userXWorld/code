@@ -1,0 +1,35 @@
+# Python cache files
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Generated outputs
+*.png
+*.jpg
+*.jpeg
+*.pdf
+*.svg
+
+# Model files
+*.pth
+*.pt
+*.ckpt
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# Environment
+venv/
+env/
+ENV/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
