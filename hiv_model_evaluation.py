@@ -6,9 +6,7 @@ import sys
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
-import seaborn as sns
 import torch
-from collections import defaultdict
 import warnings
 warnings.filterwarnings('ignore')
 
@@ -32,6 +30,9 @@ class PerturbedHIVEnv(HIVTreatmentEnv):
     用于测试策略的鲁棒性
     继承自HIVTreatmentEnv，添加扰动参数
     """
+    # 药物效力系数常量
+    DRUG_EFFICACY = [0.0, 0.5, 0.75, 0.9]  # [无治疗, 单药, 双药, 三药联合]
+    
     def __init__(self, patient_id=0, viral_replication_factor=1.0, observation_noise=0.0):
         """
         参数：
@@ -47,8 +48,8 @@ class PerturbedHIVEnv(HIVTreatmentEnv):
         """
         执行治疗动作，返回新状态和奖励（带扰动）
         """
-        # 药物效力系数
-        drug_efficacy = [0.0, 0.5, 0.75, 0.9][action]
+        # 使用类常量获取药物效力
+        drug_efficacy = self.DRUG_EFFICACY[action]
         
         # 1. 病毒载量更新（添加复制因子扰动）
         viral_decay = drug_efficacy * 0.5
@@ -627,7 +628,7 @@ def main():
     # 第2步：简短训练（演示用）
     print("\n【步骤2】训练智能体（演示模式：100轮）...")
     num_train_episodes = 100  # 演示用，实际应该更多
-    history = train_agent(env, agent, num_episodes=num_train_episodes)
+    train_agent(env, agent, num_episodes=num_train_episodes)
     print(f"✅ 训练完成，最终探索率: {agent.epsilon:.3f}")
     
     # 第3步：创建评估器
